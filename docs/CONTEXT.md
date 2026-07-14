@@ -1,4 +1,6 @@
-# Crazy Entertainment website — STATE
+# Crazy Entertainment website — CONTEXT
+
+> **Frozen context — history, DNS/deploy records, and founder decisions. Not a live status file.** Live state = `git log` + `docs/ROADMAP.md`. (Renamed from STATE.md, 2026-07-15.)
 
 _Context doc for resuming work on this site. Facts + how it came to be + decisions + open founder-calls.
 Read this first. Distrust hand-written status until checked against the files / live site._

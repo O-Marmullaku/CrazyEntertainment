@@ -1,7 +1,7 @@
 # AGENTS.md — Crazy Entertainment (company website)
 
-Project contract for this repo. Read **`docs/STATE.md` first** — it has the current state, how the site came to
-be, the decisions, and the open founder-calls. This repo also inherits the Creations-level workflow (the parent
+Project contract for this repo. Read **`docs/CONTEXT.md` first** — it has how the site came to
+be, the decisions, and the open founder-calls (frozen context, not live status). This repo also inherits the Creations-level workflow (the parent
 `../AGENTS.md`), but this is a **small static site** — keep changes surgical, no over-engineering.
 
 ## What this is
@@ -32,7 +32,7 @@ doubles as the **privacy-policy URL for the Crazy Enhancer for YouTube extension
 | `CNAME` | `crazyentertainment.ch` — tells GitHub Pages the custom domain. Don't delete. |
 | `.nojekyll` | Serve files as-is (no Jekyll). |
 | `README.md` | Short human readme. |
-| `docs/STATE.md` | **Context doc — read first.** History, decisions, open founder-calls, the 13-project data. |
+| `docs/CONTEXT.md` | **Context doc — read first.** History, decisions, open founder-calls, the 13-project data. |
 
 Fonts load from **Google Fonts** (disclosed in the privacy policy; could be self-hosted later for a fully
 tracker-free site).
@@ -46,7 +46,7 @@ tracker-free site).
 ## Deploy
 Push to `main`. GitHub Pages (Settings → Pages → Source: `main` / root) serves it. The custom domain is set via
 the `CNAME` file + GoDaddy DNS (4 apex `A` records → GitHub Pages IPs `185.199.108–111.153`, and `www` CNAME →
-`o-marmullaku.github.io.`). Already wired and live — see `docs/STATE.md → Deploy` for the exact records.
+`o-marmullaku.github.io.`). Already wired and live — see `docs/CONTEXT.md → Deploy` for the exact records.
 
 ## Verify before "done"
 Visual screenshot (above) + the relative links resolve (`privacy.html`, `impressum.html`, `style.css`, etc. are
