@@ -1,53 +1,23 @@
 # AGENTS.md — Crazy Entertainment (company website)
 
-Project contract for this repo. Read **`docs/CONTEXT.md` first** — it has how the site came to
-be, the decisions, and the open founder-calls (frozen context, not live status). This repo also inherits the Creations-level workflow (the parent
-`../AGENTS.md`), but this is a **small static site** — keep changes surgical, no over-engineering.
+Project contract. Shared workflow inherited from Creations-level `../AGENTS.md`. **Read `docs/CONTEXT.md` first** — history, decisions, open founder-calls, exact DNS/deploy records, and the 13-project source data (frozen context, not live status).
 
 ## What this is
-The public website for **Crazy Entertainment Marmullaku** — the independent Swiss software studio of **Osman
-Marmullaku** (ETH Zürich CS). A company/landing site (NOT a personal CV — company voice, "we"): hero, a
-13-project work grid, about, contact, plus a **privacy policy** and a Swiss **Impressum**. The privacy page
-doubles as the **privacy-policy URL for the Crazy Enhancer for YouTube extension's store listings**.
+Public **company/landing** site for **Crazy Entertainment Marmullaku** (Swiss software studio of Osman Marmullaku) — company voice "we", NOT a personal CV. Hero → Selected work (13 project cards) → about + stats → contact → footer, plus `privacy.html` + Swiss `impressum.html`. Small static site — stay surgical.
 
-- **Live:** https://crazyentertainment.ch  (also https://o-marmullaku.github.io/CrazyEntertainment/ → redirects to it)
-- **Repo:** `O-Marmullaku/CrazyEntertainment` (**public**), branch **`main`**.
-- **Host:** GitHub Pages (Source = `main` / root). Custom domain via GoDaddy DNS + the `CNAME` file.
+- **Live:** https://crazyentertainment.ch (the github.io subpath 301-redirects here). **Repo:** `O-Marmullaku/CrazyEntertainment` (**public**), `main`. **Host:** GitHub Pages (Source = `main` / root).
 
-## ⚠ Hard rules (this repo)
-- **NO `Co-Authored-By: Claude` trailer on commits here.** Founder's explicit request (public repo). Commit
-  messages are plain (the first commit is literally `initial`). Do NOT add the trailer that the other repos use.
-- Work directly on **`main`**, push when the founder asks (or in SOLO per the inherited workflow). No side branches.
+## ⚠ Hard rules (this repo — override inherited/global defaults)
+- **NO `Co-Authored-By: Claude` trailer on commits.** Founder's explicit request (public repo) — this **overrides the global default that adds the trailer**. Plain commit messages.
 - **No build step, no framework, no new dependencies.** Plain HTML + CSS + vanilla JS. Keep it that way.
+- **`privacy.html` is load-bearing externally** — it's the privacy-policy URL on the **Crazy Enhancer for YouTube** extension's store listings. Don't move, rename, or break it.
+- **Keep every asset link relative** (`style.css`, `privacy.html`, `impressum.html`, …) — the site serves from both the github.io subpath and the apex domain; an absolute path breaks one of them.
+- **Don't delete `CNAME`** (`crazyentertainment.ch` — tells Pages the custom domain) or `.nojekyll` (serve as-is, no Jekyll).
 
-## Stack & files (no build)
-| File | Role |
-|---|---|
-| `index.html` | Landing — hero, **Selected work** (13 project cards), about + stats, contact, footer. |
-| `style.css` | The whole design system: dark theme, coral-red accent `#ff4d36`, Space Grotesk + Inter + JetBrains Mono, reveal/nav/cards/legal. |
-| `main.js` | Tiny vanilla JS — nav scroll state, mobile burger menu, IntersectionObserver scroll-reveal. |
-| `privacy.html` | Privacy policy (the site **and** the Crazy Enhancer extension — the store privacy URL). |
-| `impressum.html` | Swiss legal notice (owner, address, contact, disclaimer, copyright). |
-| `favicon.svg` | The mark (rounded square + coral 4-point spark), reused inline in the nav/footer brand. |
-| `CNAME` | `crazyentertainment.ch` — tells GitHub Pages the custom domain. Don't delete. |
-| `.nojekyll` | Serve files as-is (no Jekyll). |
-| `README.md` | Short human readme. |
-| `docs/CONTEXT.md` | **Context doc — read first.** History, decisions, open founder-calls, the 13-project data. |
+## Files (no build)
+`index.html` (hero + 13 work cards + about/contact) · `style.css` (whole design system: dark, coral `#ff4d36`, Space Grotesk / Inter / JetBrains Mono — loaded from Google Fonts, disclosed in the privacy policy) · `main.js` (nav scroll state, mobile burger, IntersectionObserver scroll-reveal) · `privacy.html` · `impressum.html` (Swiss legal notice) · `favicon.svg` · `CNAME` · `.nojekyll`. Design / DNS / per-project data detail lives in `docs/CONTEXT.md`.
 
-Fonts load from **Google Fonts** (disclosed in the privacy policy; could be self-hosted later for a fully
-tracker-free site).
-
-## Run / preview
-- Just open `index.html`, or serve: `python -m http.server 8080`.
-- It's a **design-led** site → **verify visually** (screenshot desktop + mobile) before reporting a UI change done.
-  Pattern used: a standalone Playwright script with `reducedMotion: "reduce"` (so `.reveal` elements show) →
-  `file:///…/index.html`, screenshot at 1440×900 (full page) + 390×844 (mobile).
-
-## Deploy
-Push to `main`. GitHub Pages (Settings → Pages → Source: `main` / root) serves it. The custom domain is set via
-the `CNAME` file + GoDaddy DNS (4 apex `A` records → GitHub Pages IPs `185.199.108–111.153`, and `www` CNAME →
-`o-marmullaku.github.io.`). Already wired and live — see `docs/CONTEXT.md → Deploy` for the exact records.
-
-## Verify before "done"
-Visual screenshot (above) + the relative links resolve (`privacy.html`, `impressum.html`, `style.css`, etc. are
-**relative**, so they work on both the github.io subpath and the apex domain — keep them relative).
+## Run / verify / deploy
+- **Run:** open `index.html`, or `python -m http.server 8080`.
+- **Verify (design-led → screenshot desktop + mobile before reporting a UI change done):** Playwright with `reducedMotion: "reduce"` (else `.reveal` elements stay hidden and the page screenshots blank), captured at 1440×900 + 390×844.
+- **Deploy:** push `main` → GitHub Pages auto-rebuilds. Custom domain = `CNAME` + GoDaddy DNS (exact A / CNAME records in `docs/CONTEXT.md → Deploy / DNS`).
