@@ -53,6 +53,19 @@ Read this first. Distrust hand-written status until checked against the files / 
   - `www` CNAME → **`o-marmullaku.github.io.`**
   - Left untouched: the two `ns` (domaincontrol.com), `soa`, `_domainconnect`, and the `_dmarc` TXT (email).
 - All four endpoints verified 200 / redirect on 2026-06-25 (`/`, `/privacy.html`, `/impressum.html`, `www`→apex).
+- **`crazysoftware.ch` — the second domain, redirects here (moved to Cloudflare 2026-08-08).** Registered at
+  GoDaddy, but **nameservers delegated to Cloudflare** (`mack.ns.cloudflare.com` / `tia.ns.cloudflare.com`) — this
+  is the ONE exception to "we did NOT delegate". Cloudflare free plan, zone holds exactly 3 records:
+  - `A` `@` → **`192.0.2.1`** (RFC 5737 test address, never contacted) — **must stay Proxied (orange cloud)**,
+    or the redirect rule never runs.
+  - `www` CNAME → `crazysoftware.ch`, **Proxied**. · `_dmarc` TXT, **DNS only**. No MX — no email on this domain.
+  - **Rules → Redirect Rules:** `crazysoftware -> crazyentertainment`, *All incoming requests* → Static
+    `https://crazyentertainment.ch`, **301**, preserve query string. **The rule is what answers** — a `522` from
+    Cloudflare means the rule is missing, off, or saved as a draft, not a DNS fault.
+  - **Why:** GoDaddy's free domain forwarding serves port 80 only. Port 443 timed out, so browsers with
+    HTTPS-first showed a "no secure connection" warning before the 301. GoDaddy needs a paid cert for HTTPS
+    forwarding; Cloudflare issues one free. Verified 2026-08-08: apex, `www` and `http://` all 301 with a valid
+    cert, query string preserved.
 - **To redeploy:** just `git push origin main` — Pages rebuilds automatically. Keep asset links **relative** so the
   site works on both the github.io subpath and the apex domain.
 
