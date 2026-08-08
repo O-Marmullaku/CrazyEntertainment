@@ -1,9 +1,9 @@
 # AGENTS.md — Crazy Entertainment (company website)
 
-Project contract. Shared workflow inherited from Creations-level `../AGENTS.md`. **Read `docs/CONTEXT.md` first** — history, decisions, open founder-calls, exact DNS/deploy records, and the 13-project source data (frozen context, not live status).
+Project contract. Shared workflow inherited from Creations-level `../AGENTS.md`. **Read `docs/CONTEXT.md` first** — history, decisions, open founder-calls, exact DNS/deploy records, and the 15-project source data (frozen context, not live status).
 
 ## What this is
-Public **company/landing** site for **Crazy Entertainment Marmullaku** (Swiss software studio of Osman Marmullaku) — company voice "we", NOT a personal CV. Hero → Selected work (13 project cards) → about + stats → contact → footer, plus `privacy.html` + Swiss `impressum.html`. Small static site — stay surgical.
+Public **company/landing** site for **Crazy Entertainment Marmullaku** (Swiss software studio of Osman Marmullaku) — company voice "we", NOT a personal CV. Hero → Selected work (15 project cards) → about + stats → contact → footer, plus `privacy.html` + Swiss `impressum.html`. Small static site — stay surgical.
 
 - **Live:** https://crazyentertainment.ch (the github.io subpath 301-redirects here). **Repo:** `O-Marmullaku/CrazyEntertainment` (**public**), `main`. **Host:** GitHub Pages (Source = `main` / root).
 
@@ -15,7 +15,7 @@ Public **company/landing** site for **Crazy Entertainment Marmullaku** (Swiss so
 - **Don't delete `CNAME`** (`crazyentertainment.ch` — tells Pages the custom domain) or `.nojekyll` (serve as-is, no Jekyll).
 
 ## Files (no build)
-`index.html` (hero + 13 work cards + about/contact) · `style.css` (whole design system: dark, coral `#ff4d36`, Space Grotesk / Inter / JetBrains Mono — loaded from Google Fonts, disclosed in the privacy policy) · `main.js` (nav scroll state, mobile burger, IntersectionObserver scroll-reveal) · `privacy.html` · `impressum.html` (Swiss legal notice) · `favicon.svg` · `CNAME` · `.nojekyll`. Design / DNS / per-project data detail lives in `docs/CONTEXT.md`.
+`index.html` (hero + 15 work cards + about/contact) · `style.css` (whole design system: dark, coral `#ff4d36`, Space Grotesk / Inter / JetBrains Mono — loaded from Google Fonts, disclosed in the privacy policy) · `main.js` (nav scroll state, mobile burger, IntersectionObserver scroll-reveal) · `privacy.html` · `impressum.html` (Swiss legal notice) · `logo.png` (CE brand mark, coral on transparent — used by `.brand .mk` in the nav + footer of all three pages) · `favicon.png` · `CNAME` · `.nojekyll`. Design / DNS / per-project data detail lives in `docs/CONTEXT.md`.
 
 ## Run / verify / deploy
 - **Run:** open `index.html`, or `python -m http.server 8080`.

@@ -4,10 +4,10 @@ The website for **Crazy Entertainment Marmullaku**, the independent software stu
 (ETH Zürich Computer Science, Switzerland). A static, dependency-free site (HTML + CSS + a little vanilla JS).
 
 - **Live:** crazyentertainment.ch (via GitHub Pages)
-- `index.html` — landing: hero, selected work (13 projects), about, contact
+- `index.html` — landing: hero, selected work (15 projects), about, contact
 - `privacy.html` — privacy policy (covers the site + the Crazy Enhancer for YouTube extension; the URL used for the Chrome Web Store listing)
 - `impressum.html` — Swiss legal notice
-- `style.css` / `main.js` / `favicon.svg` — design system, interactions, mark
+- `style.css` / `main.js` / `logo.png` / `favicon.png` — design system, interactions, CE brand mark
 
 ## Run locally
 Just open `index.html`, or serve the folder:

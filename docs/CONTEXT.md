@@ -12,7 +12,7 @@ Read this first. Distrust hand-written status until checked against the files / 
 - **Repo:** `O-Marmullaku/CrazyEntertainment` (**public**), branch `main`. **No `Co-Authored-By: Claude` trailer on
   commits here** (founder's rule). History: a clean single `initial` commit, then incremental.
 - **What it is:** the company/landing site for **Crazy Entertainment Marmullaku** (Swiss software studio of Osman
-  Marmullaku, ETH Zürich CS). Company voice ("we"), NOT a personal CV. Sections: hero → **Selected work** (13
+  Marmullaku, ETH Zürich CS). Company voice ("we"), NOT a personal CV. Sections: hero → **Selected work** (15
   project cards) → about + stats → contact → footer; plus `privacy.html` + `impressum.html`.
 - **Static, no build, no framework.** HTML + CSS + a little vanilla JS. Google Fonts (Space Grotesk + Inter +
   JetBrains Mono). Coral-red accent `#ff4d36` on near-black.
@@ -38,9 +38,10 @@ Read this first. Distrust hand-written status until checked against the files / 
   `#ff4d36`, used sparingly). Big tight display type (Space Grotesk), mono labels (JetBrains Mono), Inter body.
   Hairline borders, generous whitespace, a faint hero glow + subtle grain, IntersectionObserver scroll-reveal,
   fixed blur nav, mobile burger menu. All in `style.css` + `main.js`.
-- **Work section:** 13 project cards (category tag, status badge live/beta/in-dev/prototype, name, tagline,
-  1–2-sentence description, tech chips). **No repo links** — the founder's project repos are private (would 404).
-- **Stats (company, not CV):** 13 Products built · 0 Trackers ever · 100% Independent · CH.
+- **Work section:** 15 project cards with CSS-only 16:9 project slates (replaceable with real screenshots later),
+  category tag, status badge live/beta/in-dev/prototype, name, tagline, 1–2-sentence description, and tech chips.
+  **No repo links** — the founder's project repos are private (would 404).
+- **Stats (company, not CV):** 15 Products built · 0 Trackers ever · 100% Independent · CH.
 - **Legal:** `impressum.html` carries the Swiss-required owner + address; `privacy.html` = no-data policy for site
   + extension.
 
@@ -60,6 +61,9 @@ Read this first. Distrust hand-written status until checked against the files / 
   appears only where legally required (the Impressum). No "I", no ETH-as-personal-flex, no try-hard headline.
 - **Excluded 2 of the 15 projects** from the public grid: **AdultVideoPlayer** (NSFW — off-brand for a client site)
   and the **Claude prompt-pack** (`5_killer_unlimited_claude_prompts` — a methodology asset, not a product).
+- **2026-08-01 update:** the founder reversed the AdultVideoPlayer exclusion and added it as an anonymized video
+  platform case study, alongside an anonymized creator-extension case study sourced from **OFEnhancer**. The prompt
+  pack remains excluded because it is not a product.
 - **No repo links on cards** — the founder's repos are private → links would 404. Status badges + descriptions only.
 - **Impressum publishes the registered address** (Luzernerstrasse 19, 5643 Sins AG) — legally required for a Swiss
   commercial site. Phone number **omitted**. ⚠ Founder may want to swap for a c/o/business address (see Open).
@@ -75,11 +79,11 @@ Read this first. Distrust hand-written status until checked against the files / 
   domains. App/transactional mail (password resets etc.) should go through a separate sender like Resend/SES, NOT
   Migadu's 20-send/day inbox.)
 - **Self-host the Google Fonts** for a 100% tracker-free site (currently disclosed in the privacy policy).
-- **Projects** — add/remove cards as projects ship or graduate; update status badges. AdultVideoPlayer stays off.
+- **Projects** — add/remove cards as projects ship or graduate; update status badges.
 - **Per-product domains/sites** — the founder plans landing pages + socials per flagship product (Dorfkönig,
   Tableverse, …) under their own domains; those would be separate repos, with this site as the studio hub.
 
-## The 13 projects on the site (source data — keep in sync with `index.html`)
+## The 15 projects on the site (source data — keep in sync with `index.html`)
 | # | Name (display) | Folder | Status | Category | One-liner |
 |---|---|---|---|---|---|
 | 1 | Crazy Enhancer for YouTube | CrazyYoutube | **live** | Browser extension | No-bloat YouTube tools (speed/transcript/music); LIVE on Firefox AMO, Chrome submitting |
@@ -95,10 +99,17 @@ Read this first. Distrust hand-written status until checked against the files / 
 | 11 | ProTeaser Studio | PTC | prototype | Desktop · Media | Long videos → teaser reels; one React core, 3 runtimes (FFmpeg planner) |
 | 12 | VideoQualityBalancer | VideoQualityBalancer | prototype | Desktop · Media | x265 quality-tuning + source-vs-encode comparison (TS/React/FFmpeg) |
 | 13 | Portica | Portfolio-3000 | in dev | Web app | Export-first builder: career material → a site you own (React/TS/Supabase) |
+| 14 | Custom Video Platform | AdultVideoPlayer | in dev | Web platform · Media | Full-stack video player and protected-media platform built from the ground up |
+| 15 | Creator Workflow Extension | OFEnhancer | beta | Browser extension · Creator tool | Local identity masking + guarded creator workflow helpers built from the ground up |
 
-**Excluded (do not add to the public site):** `AdultVideoPlayer` (Johnny Guides — NSFW), `5_killer_unlimited_claude_prompts` (prompt pack, not a product).
+**Excluded (do not add to the public site):** `5_killer_unlimited_claude_prompts` (prompt pack, not a product).
 
 ## Recent (newest first)
+- 2026-08-01 — **Added visual placeholders to all 15 work cards.** CSS-only numbered project slates add a consistent
+  thumbnail area now and preserve a ready-made 16:9 slot for real screenshots later.
+- 2026-08-01 — **Expanded the public work grid to 15 products.** Added anonymized capability-led cards for
+  `AdultVideoPlayer` and `OFEnhancer`; added the grouped Studio stack; updated the company product count, privacy
+  scope, and legal-page CTA.
 - 2026-06-25 — **Site built, shipped, and live.** Created from a deep read of the Creations projects + CV; first
   draft (too personal + try-hard) reframed to **company voice** per founder feedback. Pushed to a clean `initial`
   commit (no Claude trailer); repo made public; GitHub Pages on; GoDaddy DNS (apex A → GitHub IPs, www → github.io);
