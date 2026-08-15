@@ -40,6 +40,11 @@ const chrome = process.env.CHROME_PATH || 'C:/Program Files/Google/Chrome/Applic
     await cards.nth(1).focus();
     await page.keyboard.press('Enter');
     assert.equal(await page.locator('#project-dialog-title').textContent(), 'Tableverse');
+    const frame = page.locator('.project-dialog-frame');
+    assert.equal(await frame.getAttribute('src'), 'https://tableking.gg/');
+    assert.equal(await frame.getAttribute('title'), 'Tableverse live demo');
+    assert.equal(await page.locator('.project-dialog-live-link').isVisible(), true);
+    assert.equal(await page.locator('.project-dialog-live-link').getAttribute('href'), 'https://tableking.gg/');
     await page.locator('.project-dialog-close').click();
     await page.waitForFunction(() => !document.querySelector('#project-dialog').open);
 

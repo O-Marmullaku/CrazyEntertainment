@@ -59,6 +59,26 @@
       stage.replaceChildren(demo);
     };
 
+    const installProjectDialogMedia = (card, projectTitle) => {
+      if (!card.dataset.demoUrl) {
+        installProjectDialogGif(card, projectTitle);
+        return;
+      }
+
+      const frame = document.createElement("iframe");
+      frame.className = "project-dialog-frame";
+      frame.src = card.dataset.demoUrl;
+      frame.title = `${projectTitle} live demo`;
+      frame.loading = "lazy";
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      frame.allowFullscreen = true;
+      frame.addEventListener("error", () => installProjectDialogGif(card, projectTitle), { once: true });
+      stage.replaceChildren(frame);
+
+      liveLink.href = card.dataset.demoLink || card.dataset.demoUrl;
+      liveLink.hidden = false;
+    };
+
     const openProjectDialog = (card) => {
       clearTimeout(projectDialogCloseTimer);
       projectDialogTrigger = card;
@@ -75,7 +95,7 @@
       icon.src = cardIcon.getAttribute("src");
       icon.alt = `${projectTitle} icon`;
       stage.style.setProperty("--project-dialog-background", `url("${cardBackground.getAttribute("src")}")`);
-      installProjectDialogGif(card, projectTitle);
+      installProjectDialogMedia(card, projectTitle);
 
       projectDialog.classList.remove("is-closing");
       projectDialog.showModal();
