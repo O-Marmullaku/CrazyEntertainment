@@ -9,6 +9,26 @@ const screenshotDir = process.env.CE_SCREENSHOT_DIR
   || 'C:/Users/osi_c/AppData/Local/Temp/crazy-entertainment-project-dialog/screenshots';
 fs.mkdirSync(screenshotDir, { recursive: true });
 
+async function assertEveryProjectCopyFits(page, viewportLabel) {
+  const cards = page.locator('.card');
+  for (let index = 0; index < await cards.count(); index += 1) {
+    await cards.nth(index).click();
+    const title = await page.locator('#project-dialog-title').textContent();
+    const fit = await page.locator('.project-dialog-copy').evaluate((copy) => ({
+      overflowY: getComputedStyle(copy).overflowY,
+      clientHeight: copy.clientHeight,
+      scrollHeight: copy.scrollHeight,
+    }));
+    assert.equal(fit.overflowY, 'hidden', `${title} copy does not scroll at ${viewportLabel}`);
+    assert.ok(
+      fit.scrollHeight <= fit.clientHeight + 1,
+      `${title} copy fits at ${viewportLabel}: ${fit.scrollHeight}px within ${fit.clientHeight}px`,
+    );
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.querySelector('#project-dialog').open);
+  }
+}
+
 (async () => {
   const browser = await chromium.launch({ executablePath: chrome, headless: true });
   try {
@@ -37,7 +57,6 @@ fs.mkdirSync(screenshotDir, { recursive: true });
       0,
       'demo media is lazy',
     );
-
     const icon = cards.first().locator('.thumbnail-layer--icon');
     const ui = cards.first().locator('.thumbnail-layer--ui');
     const [iconBefore, uiBefore] = await Promise.all([icon.boundingBox(), ui.boundingBox()]);
@@ -71,6 +90,22 @@ fs.mkdirSync(screenshotDir, { recursive: true });
     assert.match(await page.locator('.project-dialog-demo').getAttribute('src'), /coachlexy\/demo\.gif$/);
     assert.equal(await page.locator('.project-dialog-chips .chip').count(), 4);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    const stageGeometry = await page.locator('.project-dialog-shell').evaluate((shell) => {
+      const stage = shell.querySelector('.project-dialog-stage');
+      const shellBox = shell.getBoundingClientRect();
+      const stageBox = stage.getBoundingClientRect();
+      return {
+        top: Math.abs(stageBox.top - shellBox.top),
+        right: Math.abs(stageBox.right - shellBox.right),
+        bottom: Math.abs(stageBox.bottom - shellBox.bottom),
+        backgroundImage: getComputedStyle(stage).backgroundImage,
+      };
+    });
+    assert.ok(
+      stageGeometry.top <= 1 && stageGeometry.right <= 1 && stageGeometry.bottom <= 1,
+      `demo stage is full bleed: ${JSON.stringify(stageGeometry)}`,
+    );
+    assert.equal(stageGeometry.backgroundImage, 'none', 'dialog stage has no thumbnail background');
     await page.screenshot({ path: path.join(screenshotDir, 'project-dialog-desktop-1440x900.png') });
 
     await page.keyboard.press('Escape');
@@ -101,6 +136,17 @@ fs.mkdirSync(screenshotDir, { recursive: true });
     await page.mouse.click(Math.max(1, dialogBounds.x - 8), dialogBounds.y + 8);
     await page.waitForFunction(() => !document.querySelector('#project-dialog').open);
     assert.equal(await cards.nth(2).evaluate((card) => document.activeElement === card), true);
+    await assertEveryProjectCopyFits(page, '1440x900');
+
+    const compactContext = await browser.newContext({
+      viewport: { width: 1280, height: 720 },
+      reducedMotion: 'reduce',
+    });
+    const compact = await compactContext.newPage();
+    compact.setDefaultTimeout(5000);
+    await compact.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+    await assertEveryProjectCopyFits(compact, '1280x720');
+    await compactContext.close();
 
     const mobileContext = await browser.newContext({
       viewport: { width: 390, height: 844 },

@@ -42,7 +42,6 @@
 
     const clearProjectDialogMedia = () => {
       stage.replaceChildren();
-      stage.style.removeProperty("--project-dialog-background");
       liveLink.hidden = true;
       liveLink.removeAttribute("href");
     };
@@ -96,7 +95,6 @@
       const projectTitle = card.querySelector("h3").textContent.trim();
       const cardDescription = card.querySelector(":scope > p:not(.tagline)");
       const cardIcon = card.querySelector(".thumbnail-layer--icon");
-      const cardBackground = card.querySelector(".thumbnail-layer--background");
 
       title.textContent = projectTitle;
       tagline.textContent = card.querySelector(".tagline").textContent;
@@ -105,7 +103,6 @@
       chips.replaceChildren(...[...card.querySelectorAll(".chip")].map((chip) => chip.cloneNode(true)));
       icon.src = cardIcon.getAttribute("src");
       icon.alt = `${projectTitle} icon`;
-      stage.style.setProperty("--project-dialog-background", `url("${cardBackground.getAttribute("src")}")`);
       installProjectDialogMedia(card, projectTitle);
 
       projectDialog.classList.remove("is-closing");
