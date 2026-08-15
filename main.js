@@ -47,12 +47,16 @@
       liveLink.removeAttribute("href");
     };
 
-    const installProjectDialogPoster = (card, projectTitle) => {
-      const poster = new Image();
-      poster.className = "project-dialog-poster";
-      poster.src = card.querySelector(".thumbnail-layer--ui").getAttribute("src");
-      poster.alt = `${projectTitle} interface preview`;
-      stage.replaceChildren(poster);
+    const installProjectDialogGif = (card, projectTitle) => {
+      const demo = new Image();
+      demo.className = "project-dialog-demo";
+      demo.alt = `${projectTitle} interface demo`;
+      demo.addEventListener("error", () => {
+        demo.className = "project-dialog-poster";
+        demo.src = card.querySelector(".thumbnail-layer--ui").getAttribute("src");
+      }, { once: true });
+      demo.src = card.dataset.demoGif;
+      stage.replaceChildren(demo);
     };
 
     const openProjectDialog = (card) => {
@@ -71,7 +75,7 @@
       icon.src = cardIcon.getAttribute("src");
       icon.alt = `${projectTitle} icon`;
       stage.style.setProperty("--project-dialog-background", `url("${cardBackground.getAttribute("src")}")`);
-      installProjectDialogPoster(card, projectTitle);
+      installProjectDialogGif(card, projectTitle);
 
       projectDialog.classList.remove("is-closing");
       projectDialog.showModal();

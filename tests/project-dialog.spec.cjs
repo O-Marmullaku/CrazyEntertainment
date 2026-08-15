@@ -9,6 +9,7 @@ const chrome = process.env.CHROME_PATH || 'C:/Program Files/Google/Chrome/Applic
   try {
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const page = await context.newPage();
+    page.setDefaultTimeout(3000);
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
 
     const cards = page.locator('.card');
@@ -28,8 +29,8 @@ const chrome = process.env.CHROME_PATH || 'C:/Program Files/Google/Chrome/Applic
       /log meals, workouts and progress/,
     );
     assert.match(
-      await page.locator('.project-dialog-poster').getAttribute('src'),
-      /coachlexy\/ui\.webp$/,
+      await page.locator('.project-dialog-demo').getAttribute('src'),
+      /coachlexy\/demo\.gif$/,
     );
 
     await page.keyboard.press('Escape');
