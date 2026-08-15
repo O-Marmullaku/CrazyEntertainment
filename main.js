@@ -47,16 +47,25 @@
       liveLink.removeAttribute("href");
     };
 
+    const createProjectDialogPoster = (card, projectTitle) => {
+      const poster = new Image();
+      poster.className = "project-dialog-poster";
+      poster.alt = `${projectTitle} interface preview`;
+      poster.src = card.querySelector(".thumbnail-layer--ui").getAttribute("src");
+      return poster;
+    };
+
     const installProjectDialogGif = (card, projectTitle) => {
+      const poster = createProjectDialogPoster(card, projectTitle);
+      stage.replaceChildren(poster);
+
       const demo = new Image();
       demo.className = "project-dialog-demo";
       demo.alt = `${projectTitle} interface demo`;
-      demo.addEventListener("error", () => {
-        demo.className = "project-dialog-poster";
-        demo.src = card.querySelector(".thumbnail-layer--ui").getAttribute("src");
+      demo.addEventListener("load", () => {
+        if (poster.isConnected) stage.replaceChildren(demo);
       }, { once: true });
       demo.src = card.dataset.demoGif;
-      stage.replaceChildren(demo);
     };
 
     const installProjectDialogMedia = (card, projectTitle) => {
@@ -72,8 +81,10 @@
       frame.loading = "lazy";
       frame.referrerPolicy = "strict-origin-when-cross-origin";
       frame.allowFullscreen = true;
+      const poster = createProjectDialogPoster(card, projectTitle);
+      frame.addEventListener("load", () => poster.remove(), { once: true });
       frame.addEventListener("error", () => installProjectDialogGif(card, projectTitle), { once: true });
-      stage.replaceChildren(frame);
+      stage.replaceChildren(frame, poster);
 
       liveLink.href = card.dataset.demoLink || card.dataset.demoUrl;
       liveLink.hidden = false;
