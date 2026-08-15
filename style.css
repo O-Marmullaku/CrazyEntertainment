@@ -158,15 +158,17 @@ section { padding-block: clamp(70px, 11vh, 130px); }
 .thumbnail-layer--icon,
 .thumbnail-layer--ui {
   height: auto; pointer-events: auto; transform: translateZ(0);
-  transition: transform .36s cubic-bezier(.16,1,.3,1), filter .36s cubic-bezier(.16,1,.3,1);
+  transition: transform .26s cubic-bezier(.16,1,.3,1), filter .26s cubic-bezier(.16,1,.3,1);
   will-change: transform;
 }
 .thumbnail-layer--icon {
   left: var(--icon-x); top: var(--icon-y); z-index: 2; width: var(--icon-w);
+  transform-origin: left center;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
 }
 .thumbnail-layer--ui {
   left: var(--ui-x); top: var(--ui-y); z-index: 1; width: var(--ui-w);
+  transform-origin: right center;
   filter: drop-shadow(0 12px 24px rgba(0,0,0,.2));
 }
 .card:nth-child(3n+2) { --visual-x: 22%; --visual-y: 72%; --visual-tilt: 5deg; }
@@ -174,11 +176,11 @@ section { padding-block: clamp(70px, 11vh, 130px); }
 .card:hover .card-visual::after { color: rgba(242,241,238,0.14); transform: rotate(var(--visual-tilt, -6deg)) scale(1.04); }
 @media (hover: hover) and (pointer: fine) {
   .thumbnail-layer--icon:hover {
-    z-index: 4; transform: translate3d(0,-1.5%,0) scale(1.08);
+    z-index: 4; transform: scale(1.18);
     filter: drop-shadow(0 16px 28px rgba(0,0,0,.28));
   }
   .thumbnail-layer--ui:hover {
-    z-index: 4; transform: translate3d(0,-1%,0) scale(1.035);
+    z-index: 4; transform: scale(1.10);
     filter: drop-shadow(0 18px 32px rgba(0,0,0,.3));
   }
 }
@@ -251,8 +253,6 @@ footer { border-top: 1px solid var(--line); padding-block: 48px; }
   .reveal { opacity: 1; transform: none; transition: none; }
   html { scroll-behavior: auto; }
   .status .dot { animation: none; }
-  .thumbnail-layer--icon,
-  .thumbnail-layer--ui { transition: none; }
 }
 
 /* ---------- responsive ---------- */
