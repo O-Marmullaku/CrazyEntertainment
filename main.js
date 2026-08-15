@@ -23,6 +23,100 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggle(false); });
   }
 
+  // Reusable project spotlight dialog
+  const projectDialog = document.getElementById("project-dialog");
+  const projectCards = document.querySelectorAll(".card");
+  let projectDialogTrigger = null;
+  let projectDialogCloseTimer = 0;
+
+  if (projectDialog) {
+    const stage = projectDialog.querySelector(".project-dialog-stage");
+    const icon = projectDialog.querySelector(".project-dialog-icon");
+    const meta = projectDialog.querySelector(".project-dialog-meta");
+    const title = document.getElementById("project-dialog-title");
+    const tagline = projectDialog.querySelector(".project-dialog-tagline");
+    const description = document.getElementById("project-dialog-description");
+    const chips = projectDialog.querySelector(".project-dialog-chips");
+    const closeButton = projectDialog.querySelector(".project-dialog-close");
+    const liveLink = projectDialog.querySelector(".project-dialog-live-link");
+
+    const clearProjectDialogMedia = () => {
+      stage.replaceChildren();
+      stage.style.removeProperty("--project-dialog-background");
+      liveLink.hidden = true;
+      liveLink.removeAttribute("href");
+    };
+
+    const installProjectDialogPoster = (card, projectTitle) => {
+      const poster = new Image();
+      poster.className = "project-dialog-poster";
+      poster.src = card.querySelector(".thumbnail-layer--ui").getAttribute("src");
+      poster.alt = `${projectTitle} interface preview`;
+      stage.replaceChildren(poster);
+    };
+
+    const openProjectDialog = (card) => {
+      clearTimeout(projectDialogCloseTimer);
+      projectDialogTrigger = card;
+      const projectTitle = card.querySelector("h3").textContent.trim();
+      const cardDescription = card.querySelector(":scope > p:not(.tagline)");
+      const cardIcon = card.querySelector(".thumbnail-layer--icon");
+      const cardBackground = card.querySelector(".thumbnail-layer--background");
+
+      title.textContent = projectTitle;
+      tagline.textContent = card.querySelector(".tagline").textContent;
+      description.textContent = cardDescription.textContent;
+      meta.replaceChildren(card.querySelector(".card-top").cloneNode(true));
+      chips.replaceChildren(...[...card.querySelectorAll(".chip")].map((chip) => chip.cloneNode(true)));
+      icon.src = cardIcon.getAttribute("src");
+      icon.alt = `${projectTitle} icon`;
+      stage.style.setProperty("--project-dialog-background", `url("${cardBackground.getAttribute("src")}")`);
+      installProjectDialogPoster(card, projectTitle);
+
+      projectDialog.classList.remove("is-closing");
+      projectDialog.showModal();
+      requestAnimationFrame(() => projectDialog.classList.add("is-visible"));
+    };
+
+    const requestProjectDialogClose = () => {
+      if (!projectDialog.open || projectDialog.classList.contains("is-closing")) return;
+      projectDialog.classList.remove("is-visible");
+      projectDialog.classList.add("is-closing");
+      const delay = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 180;
+      projectDialogCloseTimer = window.setTimeout(() => projectDialog.close(), delay);
+    };
+
+    projectCards.forEach((card) => {
+      const projectTitle = card.querySelector("h3").textContent.trim();
+      card.tabIndex = 0;
+      card.setAttribute("role", "button");
+      card.setAttribute("aria-haspopup", "dialog");
+      card.setAttribute("aria-label", `Open ${projectTitle} project demo`);
+      card.addEventListener("click", () => {
+        if (!window.getSelection().toString()) openProjectDialog(card);
+      });
+      card.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        openProjectDialog(card);
+      });
+    });
+
+    closeButton.addEventListener("click", requestProjectDialogClose);
+    projectDialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      requestProjectDialogClose();
+    });
+    projectDialog.addEventListener("click", (event) => {
+      if (event.target === projectDialog) requestProjectDialogClose();
+    });
+    projectDialog.addEventListener("close", () => {
+      clearProjectDialogMedia();
+      projectDialog.classList.remove("is-visible", "is-closing");
+      projectDialogTrigger?.focus();
+    });
+  }
+
   // Scroll reveal
   const els = document.querySelectorAll(".reveal");
   if (!("IntersectionObserver" in window)) {
