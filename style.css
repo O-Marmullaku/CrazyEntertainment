@@ -252,7 +252,7 @@ footer { border-top: 1px solid var(--line); padding-block: 48px; }
   html { scroll-behavior: auto; }
   .status .dot { animation: none; }
   .thumbnail-layer--icon,
-  .thumbnail-layer--ui { transition: none; transform: none !important; }
+  .thumbnail-layer--ui { transition: none; }
 }
 
 /* ---------- responsive ---------- */
