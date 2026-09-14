@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <div class="wrap">
 
     <!-- NAV -->
@@ -25,7 +26,7 @@
         <img class="mk" src="logo.png" width="155" height="142" alt="" />
         Crazy&nbsp;Entertainment
       </a>
-      <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <button class="nav-burger" id="burger" type="button" aria-label="Menu" aria-controls="navlinks" aria-expanded="false"><span></span><span></span><span></span></button>
       <div class="nav-links" id="navlinks">
         <a href="#work">Work</a>
         <a href="#about">About</a>
@@ -34,6 +35,7 @@
       </div>
     </nav>
 
+    <main id="main">
     <!-- HERO -->
     <header class="hero container" id="top">
       <span class="status reveal"><span class="dot"></span> Open to new projects</span>
@@ -58,12 +60,15 @@
       <div class="work-grid">
 
         <article class="card reveal" data-demo-gif="assets/projects/coachlexy/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:2.583%;--icon-y:17.333%;--icon-w:34.75%;--ui-x:37.167%;--ui-y:9.481%;--ui-w:61.75%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:2.583%;--icon-y:17.333%;--icon-w:34.75%;--ui-x:37.167%;--ui-y:9.481%;--ui-w:61.75%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/coachlexy/background.webp" alt="" width="1200" height="675" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/coachlexy/icon.webp" alt="" width="417" height="441" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/coachlexy/ui.webp" alt="" width="741" height="536" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Fitness &amp; nutrition</span><span class="badge dev">In dev</span></div>
           <h3>CoachLexy</h3>
@@ -73,12 +78,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/tableverse/demo.gif" data-demo-url="https://tableking.gg/" data-demo-link="https://tableking.gg/">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:2.25%;--icon-y:18.519%;--icon-w:35.083%;--ui-x:37.167%;--ui-y:9.481%;--ui-w:61.667%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:2.25%;--icon-y:18.519%;--icon-w:35.083%;--ui-x:37.167%;--ui-y:9.481%;--ui-w:61.667%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/tableverse/background.webp" alt="" width="1200" height="675" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/tableverse/icon.webp" alt="" width="421" height="421" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/tableverse/ui.webp" alt="" width="740" height="536" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Multiplayer table games</span><span class="badge proto">Prototype</span></div>
           <h3>Tableverse</h3>
@@ -88,12 +96,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/syb-l/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:3.417%;--icon-y:23.259%;--icon-w:30.833%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:3.417%;--icon-y:23.259%;--icon-w:30.833%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/syb-l/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/syb-l/icon.webp" alt="" width="370" height="363" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/syb-l/ui.webp" alt="" width="738" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Calls &amp; file sharing</span><span class="badge beta">Beta</span></div>
           <h3>Syb-L</h3>
@@ -103,12 +114,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/videoqualitybalancer/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:.583%;--icon-y:16%;--icon-w:39.167%;--ui-x:37.167%;--ui-y:9.481%;--ui-w:61.667%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:.583%;--icon-y:16%;--icon-w:39.167%;--ui-x:37.167%;--ui-y:9.481%;--ui-w:61.667%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/videoqualitybalancer/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/videoqualitybalancer/icon.webp" alt="" width="470" height="460" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/videoqualitybalancer/ui.webp" alt="" width="740" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Video compression</span><span class="badge proto">Prototype</span></div>
           <h3>VideoQualityBalancer</h3>
@@ -118,12 +132,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/crazy-enhancer-youtube/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:2.5%;--icon-y:18.963%;--icon-w:34.75%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:2.5%;--icon-y:18.963%;--icon-w:34.75%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/crazy-enhancer-youtube/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/crazy-enhancer-youtube/icon.webp" alt="" width="417" height="418" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/crazy-enhancer-youtube/ui.webp" alt="" width="738" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">YouTube playback controls</span><span class="badge live">Live</span></div>
           <h3>Crazy Enhancer for YouTube</h3>
@@ -133,12 +150,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/dorfkoenig/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:6.667%;--icon-y:16.889%;--icon-w:25.667%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:6.667%;--icon-y:16.889%;--icon-w:25.667%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/dorfkoenig/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/dorfkoenig/icon.webp" alt="" width="308" height="416" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/dorfkoenig/ui.webp" alt="" width="738" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Swiss geography game</span><span class="badge dev">In dev</span></div>
           <h3>Dorfkönig</h3>
@@ -148,12 +168,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/apollo-dual-screen/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:3.333%;--icon-y:20.741%;--icon-w:31.75%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:3.333%;--icon-y:20.741%;--icon-w:31.75%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/apollo-dual-screen/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/apollo-dual-screen/icon.webp" alt="" width="381" height="403" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/apollo-dual-screen/ui.webp" alt="" width="738" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Dual-screen streaming</span><span class="badge dev">In dev</span></div>
           <h3>Apollo Dual-Screen</h3>
@@ -163,12 +186,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/axiom-calculator/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:7.25%;--icon-y:25.037%;--icon-w:24.25%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.583%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:7.25%;--icon-y:25.037%;--icon-w:24.25%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.583%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/axiom-calculator/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/axiom-calculator/icon.webp" alt="" width="291" height="355" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/axiom-calculator/ui.webp" alt="" width="739" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Scientific calculator</span><span class="badge beta">Beta</span></div>
           <h3>Axiom Calculator Platform</h3>
@@ -178,27 +204,33 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/token-measurer/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:2.167%;--icon-y:21.185%;--icon-w:34.333%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:2.167%;--icon-y:21.185%;--icon-w:34.333%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/token-measurer/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/token-measurer/icon.webp" alt="" width="412" height="412" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/token-measurer/ui.webp" alt="" width="738" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
-          <div class="card-top"><span class="card-cat">Claude Code usage</span><span class="badge beta">Beta</span></div>
+          <div class="card-top"><span class="card-cat">Coding-assistant usage</span><span class="badge beta">Beta</span></div>
           <h3>Token Measurer</h3>
-          <p class="tagline">A featherweight live usage meter for Claude Code.</p>
-          <p>Token Measurer reads the local logs Claude Code already writes and shows how much of the rolling and weekly limits remain. It makes no API calls and costs nothing to run. A small pill sits at the top of the screen, backed by a tray chart that drains from green to red. Move the pointer toward the overlay and it fades away and stops catching clicks. It runs on Tauri 2 rather than Electron and is about 5 MB.</p>
+          <p class="tagline">A featherweight live usage meter for a coding assistant.</p>
+          <p>Token Measurer reads the existing local logs of its supported coding assistant and shows how much of the rolling and weekly limits remain. It makes no API calls and costs nothing to run. A small pill sits at the top of the screen, backed by a tray chart that drains from green to red. Move the pointer toward the overlay and it fades away and stops catching clicks. It runs on Tauri 2 rather than Electron and is about 5 MB.</p>
           <div class="chips"><span class="chip">Rust</span><span class="chip">Tauri 2</span><span class="chip">Win32</span><span class="chip">WebView2</span></div>
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/reviewer-3000/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:5.083%;--icon-y:25.63%;--icon-w:28.917%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.583%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:5.083%;--icon-y:25.63%;--icon-w:28.917%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.583%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/reviewer-3000/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/reviewer-3000/icon.webp" alt="" width="347" height="347" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/reviewer-3000/ui.webp" alt="" width="739" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Review publishing</span><span class="badge beta">Beta</span></div>
           <h3>Reviewer 3000</h3>
@@ -208,12 +240,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/dump-to-txt/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:3.667%;--icon-y:25.481%;--icon-w:30.25%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.583%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:3.667%;--icon-y:25.481%;--icon-w:30.25%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.583%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/dump-to-txt/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/dump-to-txt/icon.webp" alt="" width="363" height="332" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/dump-to-txt/ui.webp" alt="" width="739" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Text export for AI</span><span class="badge beta">Beta</span></div>
           <h3>DumpToTxt</h3>
@@ -223,12 +258,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/micbridge/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:6.833%;--icon-y:23.852%;--icon-w:29.25%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:6.833%;--icon-y:23.852%;--icon-w:29.25%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/micbridge/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/micbridge/icon.webp" alt="" width="351" height="398" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/micbridge/ui.webp" alt="" width="738" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Microphone sharing</span><span class="badge beta">Beta</span></div>
           <h3>MicBridge</h3>
@@ -238,12 +276,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/proteaser-studio/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:3.083%;--icon-y:22.519%;--icon-w:32.667%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.583%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:3.083%;--icon-y:22.519%;--icon-w:32.667%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.583%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/proteaser-studio/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/proteaser-studio/icon.webp" alt="" width="392" height="394" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/proteaser-studio/ui.webp" alt="" width="739" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Video teaser editing</span><span class="badge proto">Prototype</span></div>
           <h3>ProTeaser Studio</h3>
@@ -253,12 +294,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/portica/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:3.833%;--icon-y:26.815%;--icon-w:30.833%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:3.833%;--icon-y:26.815%;--icon-w:30.833%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/portica/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/portica/icon.webp" alt="" width="370" height="333" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/portica/ui.webp" alt="" width="738" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Portfolio builder</span><span class="badge dev">In dev</span></div>
           <h3>Portica</h3>
@@ -268,12 +312,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/custom-video-platform/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:3.5%;--icon-y:29.333%;--icon-w:33.833%;--ui-x:37.167%;--ui-y:9.481%;--ui-w:61.667%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:3.5%;--icon-y:29.333%;--icon-w:33.833%;--ui-x:37.167%;--ui-y:9.481%;--ui-w:61.667%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/custom-video-platform/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/custom-video-platform/icon.webp" alt="" width="406" height="278" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/custom-video-platform/ui.webp" alt="" width="740" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Video catalogue</span><span class="badge dev">In dev</span></div>
           <h3>Custom Video Platform</h3>
@@ -283,12 +330,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/creator-workflow-extension/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:5.75%;--icon-y:21.778%;--icon-w:27.417%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.583%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:5.75%;--icon-y:21.778%;--icon-w:27.417%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.583%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/creator-workflow-extension/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/creator-workflow-extension/icon.webp" alt="" width="329" height="387" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/creator-workflow-extension/ui.webp" alt="" width="739" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Creator publishing</span><span class="badge beta">Beta</span></div>
           <h3>Creator Workflow Extension</h3>
@@ -298,12 +348,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/fuckingshareit/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:6.5%;--icon-y:26.37%;--icon-w:26.917%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:6.5%;--icon-y:26.37%;--icon-w:26.917%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/fuckingshareit/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/fuckingshareit/icon.webp" alt="" width="323" height="321" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/fuckingshareit/ui.webp" alt="" width="738" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Windows file sharing</span><span class="badge proto">Prototype</span></div>
           <h3>FuckingShareIT</h3>
@@ -313,12 +366,15 @@
         </article>
 
         <article class="card reveal" data-demo-gif="assets/projects/desktop-edge-arranger/demo.gif">
-          <div class="card-visual has-thumbnail" aria-hidden="true">
-            <div class="project-thumbnail" style="--icon-x:5.25%;--icon-y:25.333%;--icon-w:27.25%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
+          <div class="card-visual" aria-hidden="true">
+            <span class="preview-unavailable">Preview unavailable</span>
+            <template class="project-media" data-images="ready" data-demo="ready">
+              <div class="project-thumbnail" style="--icon-x:5.25%;--icon-y:25.333%;--icon-w:27.25%;--ui-x:37.333%;--ui-y:9.481%;--ui-w:61.5%">
               <img class="thumbnail-layer thumbnail-layer--background" src="assets/projects/desktop-edge-arranger/background.webp" alt="" width="1200" height="675" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--icon" src="assets/projects/desktop-edge-arranger/icon.webp" alt="" width="327" height="327" loading="lazy" decoding="async" />
               <img class="thumbnail-layer thumbnail-layer--ui" src="assets/projects/desktop-edge-arranger/ui.webp" alt="" width="738" height="536" loading="lazy" decoding="async" />
             </div>
+            </template>
           </div>
           <div class="card-top"><span class="card-cat">Desktop icon layout</span><span class="badge beta">Beta</span></div>
           <h3>Desktop Edge Arranger</h3>
@@ -360,6 +416,8 @@
       <a href="mailto:osman@marmullaku.ch" class="mail reveal">osman@marmullaku.ch</a>
     </section>
 
+    </main>
+
     <!-- FOOTER -->
     <footer>
       <div class="container">
@@ -382,15 +440,18 @@
 
     <dialog class="project-dialog" id="project-dialog" aria-labelledby="project-dialog-title" aria-describedby="project-dialog-description">
       <div class="project-dialog-shell">
-        <button class="project-dialog-close" type="button" aria-label="Close project demo">×</button>
+        <button class="project-dialog-close" type="button" aria-label="Close project demo" autofocus>×</button>
         <div class="project-dialog-copy">
-          <img class="project-dialog-icon" src="" alt="" width="320" height="320" />
+          <img class="project-dialog-icon" src="logo.png" alt="" hidden width="320" height="320" />
           <div class="project-dialog-meta"></div>
           <h2 id="project-dialog-title"></h2>
           <p class="project-dialog-tagline"></p>
           <p id="project-dialog-description"></p>
           <div class="project-dialog-chips chips"></div>
-          <a class="project-dialog-live-link" href="" target="_blank" rel="noopener noreferrer" hidden>Open full demo ↗</a>
+          <div class="project-dialog-actions" hidden>
+            <a class="project-dialog-live-link" target="_blank" rel="noopener noreferrer">Open full demo ↗</a>
+            <button class="project-dialog-fallback" type="button">Show preview instead</button>
+          </div>
         </div>
         <div class="project-dialog-stage" aria-live="polite"></div>
       </div>

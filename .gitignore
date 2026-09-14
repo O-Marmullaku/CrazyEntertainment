@@ -1,1 +1,5 @@
-.worktrees/
+.tools/
+.local/
+test-results/
+.DS_Store
+Thumbs.db
