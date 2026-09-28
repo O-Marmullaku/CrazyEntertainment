@@ -39,11 +39,11 @@ test('root deployment markers and externally important pages', () => {
 test('current project identities, order, count and one reusable dialog', () => {
   const cards = readCards(source['index.html']);
   assert.deepEqual(cards.map((c) => c.name), [
-    'CoachLexy', 'TableKing', 'Doorlight', 'VideoQualityBalancer', 'Crazy Enhancer for YouTube',
-    'Dorfkönig', 'Apollo Dual-Screen', 'Axiom Calculator Platform', 'Token Measurer', 'Reviewer 3000',
-    'DumpToTxt', 'MicBridge', 'ProTeaser Studio', 'Portica', 'Custom Video Platform',
-    'Creator Workflow Extension', 'FuckingShareIT', 'Desktop Edge Arranger',
-    'CreatorWorkflow', 'WordSRT', 'Sitewalk',
+    'TableKing', 'Custom Video Platform', 'CoachLexy', 'Creator Workflow Extension', 'Doorlight',
+    'Portica', 'Reviewer 3000', 'Sitewalk', 'VideoQualityBalancer', 'Dorfkönig',
+    'Apollo Dual-Screen', 'Axiom Calculator Platform', 'MicBridge', 'ProTeaser Studio',
+    'Token Measurer', 'Crazy Enhancer for YouTube', 'DumpToTxt', 'WordSRT',
+    'CreatorWorkflow', 'FuckingShareIT', 'Desktop Edge Arranger',
   ]);
   assert.match(source['index.html'], /Digital products<\/span><span class="v">21<\/span>/);
   assert.equal((source['index.html'].match(/<dialog\b/g) || []).length, 1);

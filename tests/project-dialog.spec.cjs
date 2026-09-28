@@ -73,6 +73,7 @@ async function shot(page, name) {
   await page.screenshot({ path: path.join(process.env.CE_SCREENSHOT_DIR, `${name}.png`), timeout: 6000 });
 }
 async function opened(page) { await page.waitForFunction(() => document.querySelector('#project-dialog').open && document.querySelector('#project-dialog').classList.contains('is-visible')); }
+function cardNamed(page, name) { return page.locator('.card').filter({ has: page.locator('h3', { hasText: new RegExp(`^${name}$`) }) }); }
 async function close(page, card, method = 'Escape') {
   if (method === 'button') await page.locator('.project-dialog-close').click();
   else await page.keyboard.press(method);
@@ -96,6 +97,8 @@ async function layout() {
     assert.equal(await page.locator('dialog').count(), 1);
     assert.equal(await page.locator('.project-dialog-stage > *').count(), 0, 'Media creation is lazy');
     await shot(page, `home-${viewport.width}x${viewport.height}`);
+    await page.locator('#work .sec-head').scrollIntoViewIfNeeded();
+    await shot(page, `work-${viewport.width}x${viewport.height}`);
     for (let index = 0; index < 21; index++) {
       const card = cards.nth(index);
       await card.click(); await opened(page);
@@ -119,11 +122,11 @@ async function layout() {
         assert.ok(bounds.width <= viewport.width && bounds.height <= viewport.height + 1);
       }
       if (index === 0) await shot(page, `dialog-${viewport.width}x${viewport.height}`);
-      if (index === 20) await shot(page, `sitewalk-dialog-${viewport.width}x${viewport.height}`);
+      if (expected === 'Sitewalk') await shot(page, `sitewalk-dialog-${viewport.width}x${viewport.height}`);
       await close(page, card, index % 2 ? 'button' : 'Escape');
     }
     // Both keyboard activation keys and a genuine backdrop click.
-    for (const [index, key] of [[0, 'Enter'], [2, 'Space']]) {
+    for (const [index, key] of [[2, 'Enter'], [4, 'Space']]) {
       const card = cards.nth(index); await card.focus(); await page.keyboard.press(key); await opened(page);
       for (let tab = 0; tab < 3; tab++) { await page.keyboard.press('Tab'); assert.equal(await page.locator('dialog').evaluate((dialog) => dialog.contains(document.activeElement) || document.activeElement === document.body), true, 'Native modal never tabs into background content (browser chrome may receive focus)'); }
       if (viewport.width > 820) {
@@ -141,9 +144,11 @@ async function media() {
   phase = 'media decoding, fallback and restored layer geometry';
   for (const viewport of viewports) {
     const { page, finish } = await load(viewport, { fixture: true });
+    const mediaCards = page.locator('.card[data-demo-gif]');
+    assert.equal(await mediaCards.count(), 18);
     for (let index = 0; index < 18; index++) {
-      const card = page.locator('.card').nth(index); await card.click(); await opened(page);
-      if (index === 1) {
+      const card = mediaCards.nth(index); await card.click(); await opened(page);
+      if ((await card.locator('h3').textContent()) === 'TableKing') {
         assert.equal(await page.locator('.project-dialog-frame').getAttribute('src'), 'https://tableking.gg/');
         assert.equal(await page.locator('.project-dialog-frame').getAttribute('title'), 'TableKing live demo');
         assert.equal(await page.locator('.project-dialog-live-link').getAttribute('href'), 'https://tableking.gg/');
@@ -158,7 +163,7 @@ async function media() {
       await noOverflow(page); await close(page, card);
     }
     if (viewport.width === 1440) {
-      const card = page.locator('.card').first(); await card.scrollIntoViewIfNeeded();
+      const card = cardNamed(page, 'CoachLexy'); await card.scrollIntoViewIfNeeded();
       await page.mouse.move(1, 1); await page.waitForTimeout(300);
       const icon = card.locator('.thumbnail-layer--icon'), ui = card.locator('.thumbnail-layer--ui');
       const a = await icon.boundingBox(), b = await ui.boundingBox();
@@ -173,7 +178,7 @@ async function media() {
   }
   {
     const { page, finish } = await load(viewports[0], { fixture: true, broken: true });
-    const card = page.locator('.card').first(); await card.click(); await opened(page);
+    const card = cardNamed(page, 'CoachLexy'); await card.click(); await opened(page);
     await page.locator('.project-dialog-unavailable').waitFor({ state: 'visible' });
     assert.equal(await page.locator('.project-dialog-stage img').count(), 0, 'Broken media never leaves a broken image element in the stage');
     await close(page, card); await finish(); console.log('PASS broken image/GIF fallback');
@@ -186,7 +191,7 @@ async function media() {
       document.addEventListener('load', (event) => { if (event.target.classList?.contains('project-dialog-frame')) event.stopImmediatePropagation(); }, true);
       document.addEventListener('error', (event) => { if (event.target.classList?.contains('project-dialog-frame')) event.stopImmediatePropagation(); }, true);
     } });
-    const card = page.locator('.card').nth(1); await card.click(); await opened(page);
+    const card = cardNamed(page, 'TableKing'); await card.click(); await opened(page);
     await page.locator('.project-dialog-frame').evaluate((frame) => frame.focus());
     assert.equal(await page.locator('.project-dialog-frame').evaluate((frame) => document.activeElement === frame), true);
     await page.locator('.project-dialog-frame').waitFor({ state: 'detached', timeout: 10000 });
@@ -204,10 +209,10 @@ async function media() {
         else native.set.call(this, value);
       } });
     } });
-    const first = page.locator('.card').first(); await first.click(); await opened(page);
+    const first = cardNamed(page, 'CoachLexy'); await first.click(); await opened(page);
     await page.locator('.project-dialog-poster').waitFor({ state: 'visible' });
     await close(page, first);
-    const third = page.locator('.card').nth(2); await third.click(); await opened(page);
+    const third = cardNamed(page, 'Doorlight'); await third.click(); await opened(page);
     await page.waitForTimeout(350);
     assert.equal(await page.locator('.project-dialog-demo').getAttribute('alt'), 'Doorlight interface demo', 'Late previous image cannot replace the current project');
     await close(page, third); await finish(); console.log('PASS immediate poster and stale-load isolation');
