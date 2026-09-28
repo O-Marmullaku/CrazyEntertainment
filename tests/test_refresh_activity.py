@@ -39,7 +39,7 @@ class ActivityTests(unittest.TestCase):
 
             changed = activity.refresh(feed, json.dumps({
                 "first": "owner/one", "second": "owner/two"
-            }), "test-token", opener)
+            }), {"owner": "test-token"}, opener)
             self.assertEqual(changed, 1)
             self.assertEqual(json.loads(feed.read_text(encoding="utf-8"))["projects"], {
                 "first": "2026-09-02T00:00:00Z",
@@ -56,8 +56,30 @@ class ActivityTests(unittest.TestCase):
             feed.write_text(original, encoding="utf-8")
             for mapping in ({"unknown": "owner/repo"}, {"first": "bad repo"}):
                 with self.assertRaises(ValueError):
-                    activity.refresh(feed, json.dumps(mapping), "token")
+                    activity.refresh(feed, json.dumps(mapping), {"owner": "token"})
             self.assertEqual(feed.read_text(encoding="utf-8"), original)
+
+    def test_sources_without_an_owner_token_are_skipped(self):
+        with tempfile.TemporaryDirectory() as directory:
+            feed = Path(directory) / "activity.json"
+            feed.write_text(json.dumps({"schema": 1, "projects": {
+                "first": "2026-09-01T00:00:00Z",
+                "second": "2026-09-01T00:00:00Z",
+            }}), encoding="utf-8")
+            requests = []
+
+            def opener(request, timeout):
+                requests.append(request.full_url)
+                return FakeResponse(json.dumps([{"commit": {"committer": {
+                    "date": "2026-09-02T00:00:00Z"}}}]).encode())
+
+            changed = activity.refresh(feed, json.dumps({
+                "first": "one/repo", "second": "two/repo"
+            }), {"one": "token"}, opener)
+            self.assertEqual(changed, 1)
+            self.assertEqual(len(requests), 1)
+            self.assertEqual(json.loads(feed.read_text(encoding="utf-8"))["projects"]["second"],
+                             "2026-09-01T00:00:00Z")
 
 
 if __name__ == "__main__":

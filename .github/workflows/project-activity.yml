@@ -19,7 +19,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Read latest private-project commits
         env:
-          ACTIVITY_READ_TOKEN: ${{ secrets.ACTIVITY_READ_TOKEN }}
+          ACTIVITY_READ_TOKEN_O_MARMULLAKU: ${{ secrets.ACTIVITY_READ_TOKEN_O_MARMULLAKU }}
+          ACTIVITY_READ_TOKEN_JOHNNYGUIDES: ${{ secrets.ACTIVITY_READ_TOKEN_JOHNNYGUIDES }}
           ACTIVITY_SOURCES_JSON: ${{ secrets.ACTIVITY_SOURCES_JSON }}
         run: python3 tools/refresh-activity.py
       - name: Publish changed dates

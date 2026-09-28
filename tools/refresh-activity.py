@@ -40,7 +40,7 @@ def latest_commit(repo, token, opener=urlopen):
     return value
 
 
-def refresh(feed_path, raw_sources, token, opener=urlopen):
+def refresh(feed_path, raw_sources, tokens, opener=urlopen):
     feed = json.loads(feed_path.read_text(encoding="utf-8"))
     if feed.get("schema") != 1 or not isinstance(feed.get("projects"), dict):
         raise ValueError("Invalid public feed")
@@ -54,7 +54,14 @@ def refresh(feed_path, raw_sources, token, opener=urlopen):
 
     changed = 0
     failed = 0
+    skipped = 0
+    requested = 0
     for slug, repo in sorted(sources.items()):
+        token = tokens.get(repo.split("/", 1)[0].lower())
+        if not token:
+            skipped += 1
+            continue
+        requested += 1
         try:
             remote = latest_commit(repo, token, opener)
             if timestamp(remote) > timestamp(feed["projects"][slug]):
@@ -65,22 +72,27 @@ def refresh(feed_path, raw_sources, token, opener=urlopen):
             code = error.code if isinstance(error, HTTPError) else type(error).__name__
             print(f"::warning::Activity refresh failed for {slug} ({code})")
             failed += 1
-    if failed == len(sources):
+    if not requested:
+        raise ValueError("No activity sources have a configured owner token")
+    if failed == requested:
         raise RuntimeError("Every remote activity request failed; feed left unchanged")
     if changed:
         feed_path.write_text(json.dumps(feed, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(f"Activity: {changed} newer date(s), {failed} failed request(s)")
+    print(f"Activity: {changed} newer date(s), {failed} failed, {skipped} skipped without owner token")
     return changed
 
 
 if __name__ == "__main__":
     raw_sources = os.environ.get("ACTIVITY_SOURCES_JSON")
-    token = os.environ.get("ACTIVITY_READ_TOKEN")
-    if not raw_sources or not token:
+    tokens = {
+        "o-marmullaku": os.environ.get("ACTIVITY_READ_TOKEN_O_MARMULLAKU"),
+        "johnnyguides": os.environ.get("ACTIVITY_READ_TOKEN_JOHNNYGUIDES"),
+    }
+    if not raw_sources or not any(tokens.values()):
         print("Activity refresh is not configured; published snapshots remain in place.")
     else:
         try:
-            refresh(FEED, raw_sources, token)
+            refresh(FEED, raw_sources, tokens)
         except (ValueError, RuntimeError) as error:
             print(error, file=sys.stderr)
             sys.exit(1)
