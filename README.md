@@ -38,15 +38,7 @@ In browser environments that prohibit navigation, `CE_OFFLINE=1` renders the act
 
 The first 18 cards have project thumbnails and demo GIFs. Their layer paths, intrinsic dimensions and composition coordinates remain in inert templates. The three newly added cards show “Preview unavailable” until authentic captures are reviewed. The TableKing live-demo URL and separate full-demo link are retained; local fallback remains available.
 
-Project activity dates in `index.html` are Git commit snapshots. On a page visit, the browser briefly fetches the public, date-only `activity.json` and shows newer dates as relative days. If that request fails, the HTML snapshot remains. A scheduled GitHub Action refreshes the feed twice a day for remote-backed projects. Six local-only Git projects retain their snapshots until the site is edited; Sitewalk and Desktop Edge Arranger have no Git history in the supplied workspace, so their cards omit the date.
-
-To enable scheduled refreshes, set these repository **Actions secrets**:
-
-- `ACTIVITY_READ_TOKEN_O_MARMULLAKU`: a fine-grained GitHub personal access token owned by O-Marmullaku with read-only **Contents** access to the selected O-Marmullaku project repositories.
-- `ACTIVITY_READ_TOKEN_JOHNNYGUIDES`: the equivalent token owned by JohnnyGuides for the selected JohnnyGuides project repositories. Never put either token in site files or the feed.
-- `ACTIVITY_SOURCES_JSON`: a JSON object mapping public project media slugs to `owner/repository` names, for example `{"syb-l":"owner/repository"}`. The owner has a local, ignored mapping at `.local/activity-sources.json`; paste its contents into the secret, not the public repository.
-
-The workflow uses its own `GITHUB_TOKEN` to commit changed dates and request a Pages build. Its first scheduled or manually triggered run can be checked under Actions. A missing account token skips only that account's projects; the published snapshots continue to work.
+Project activity dates in `index.html` are snapshots of each local repository's latest Git commit. The browser converts them to “Updated X days ago” on each visit without fetching private repository data. Before publishing a site update, run `python tools/refresh-activity.py` to refresh the snapshots from the owner's local Git repositories. The ignored `.local/activity-paths.json` maps card keys to sibling checkout paths on this machine; use `--check` to detect stale dates without changing the page. This needs no GitHub token, network request or scheduled workflow. Sitewalk and Desktop Edge Arranger have no Git history in the supplied workspace, so their cards omit the date.
 
 Restore only authentic, reviewed media, then follow [the media maintenance procedure](docs/media.md). Missing media is an explicit supported state; it is not a claim that the originals were verified.
 

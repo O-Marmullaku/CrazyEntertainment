@@ -1,98 +1,90 @@
-"""Refresh the public date-only feed from GitHub; repo names arrive via Actions secret."""
+"""Copy latest local Git commit dates into the public project cards.
 
+The local path mapping stays in .local/activity-paths.json, outside Git.
+No network request or token is needed.
+"""
+
+import argparse
+import calendar
 from datetime import datetime
 import json
-import os
 from pathlib import Path
 import re
-import sys
-from urllib.error import HTTPError, URLError
-from urllib.parse import quote
-from urllib.request import Request, urlopen
+import subprocess
+
 
 ROOT = Path(__file__).resolve().parents[1]
-FEED = ROOT / "activity.json"
-REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
+CARDS = re.compile(r'(<article class="card reveal"(?P<attrs>[^>]*)>)(?P<body>.*?)(</article>)', re.S)
+SLUG = re.compile(r'data-demo-gif="assets/projects/([a-z0-9-]+)/demo\.gif"')
+ACTIVITY_KEY = re.compile(r'data-activity-key="([a-z0-9-]+)"')
+TIME = re.compile(r'<time class="card-updated" datetime="([^"]+)">([^<]*)</time>')
 
 
-def timestamp(value):
-    if not isinstance(value, str):
-        raise ValueError("Expected an ISO timestamp")
-    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    if parsed.tzinfo is None:
-        raise ValueError("Timestamp needs a timezone")
-    return parsed
-
-
-def latest_commit(repo, token, opener=urlopen):
-    owner, name = repo.split("/")
-    url = f"https://api.github.com/repos/{quote(owner)}/{quote(name)}/commits?per_page=1"
-    request = Request(url, headers={
-        "Accept": "application/vnd.github+json",
-        "Authorization": f"Bearer {token}",
-        "User-Agent": "CrazyEntertainment-activity-publisher",
-    })
-    with opener(request, timeout=12) as response:
-        data = json.load(response)
-    commit = data[0]["commit"]
-    value = commit["committer"]["date"] or commit["author"]["date"]
-    timestamp(value)
+def latest_local_commit(path):
+    result = subprocess.run(
+        ["git", "-C", str(path), "log", "-1", "--format=%cI"],
+        capture_output=True, text=True, check=True,
+    )
+    value = result.stdout.strip()
+    if not value:
+        raise ValueError("Local Git repository has no commits")
     return value
 
 
-def refresh(feed_path, raw_sources, tokens, opener=urlopen):
-    feed = json.loads(feed_path.read_text(encoding="utf-8"))
-    if feed.get("schema") != 1 or not isinstance(feed.get("projects"), dict):
-        raise ValueError("Invalid public feed")
-    sources = json.loads(raw_sources)
-    if not isinstance(sources, dict) or not sources:
-        raise ValueError("Activity source secret must be a nonempty JSON object")
-    if not set(sources).issubset(feed["projects"]):
-        raise ValueError("Activity source key is absent from the public feed")
-    if any(not isinstance(repo, str) or not REPOSITORY.fullmatch(repo) for repo in sources.values()):
-        raise ValueError("Activity source is not a GitHub owner/repository pair")
-
+def refresh(html_path, paths, git_date=latest_local_commit, check=False):
+    html = html_path.read_text(encoding="utf-8")
+    seen = set()
     changed = 0
-    failed = 0
-    skipped = 0
-    requested = 0
-    for slug, repo in sorted(sources.items()):
-        token = tokens.get(repo.split("/", 1)[0].lower())
-        if not token:
-            skipped += 1
-            continue
-        requested += 1
-        try:
-            remote = latest_commit(repo, token, opener)
-            if timestamp(remote) > timestamp(feed["projects"][slug]):
-                feed["projects"][slug] = remote
-                changed += 1
-        except (HTTPError, URLError, TimeoutError, KeyError, IndexError, ValueError) as error:
-            # Public workflow logs must not print private repository names or tokens.
-            code = error.code if isinstance(error, HTTPError) else type(error).__name__
-            print(f"::warning::Activity refresh failed for {slug} ({code})")
-            failed += 1
-    if not requested:
-        raise ValueError("No activity sources have a configured owner token")
-    if failed == requested:
-        raise RuntimeError("Every remote activity request failed; feed left unchanged")
-    if changed:
-        feed_path.write_text(json.dumps(feed, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(f"Activity: {changed} newer date(s), {failed} failed, {skipped} skipped without owner token")
+
+    def card(match):
+        nonlocal changed
+        slug_match = SLUG.search(match.group("attrs")) or ACTIVITY_KEY.search(match.group("attrs"))
+        if not slug_match or slug_match.group(1) not in paths:
+            return match.group(0)
+        slug = slug_match.group(1)
+        if slug in seen:
+            raise ValueError("Duplicate mapped project card")
+        seen.add(slug)
+        time_match = TIME.search(match.group("body"))
+        if not time_match:
+            raise ValueError(f"Mapped project lacks a Git date: {slug}")
+        path = Path(paths[slug])
+        if not path.is_absolute():
+            path = ROOT / path
+        if not path.is_dir():
+            raise ValueError(f"Mapped local repository is unavailable: {slug}")
+        value = git_date(path)
+        commit = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if commit.tzinfo is None:
+            raise ValueError(f"Git date lacks timezone: {slug}")
+        label = f"Updated {calendar.month_abbr[commit.month]} {commit.day}, {commit.year}"
+        if (value, label) == time_match.groups():
+            return match.group(0)
+        changed += 1
+        body = TIME.sub(lambda _: f'<time class="card-updated" datetime="{value}">{label}</time>',
+                        match.group("body"), count=1)
+        return match.group(1) + body + match.group(4)
+
+    updated = CARDS.sub(card, html)
+    missing = set(paths) - seen
+    if missing:
+        raise ValueError(f"Mapped cards not found: {', '.join(sorted(missing))}")
+    if changed and not check:
+        html_path.write_text(updated, encoding="utf-8")
     return changed
 
 
 if __name__ == "__main__":
-    raw_sources = os.environ.get("ACTIVITY_SOURCES_JSON")
-    tokens = {
-        "o-marmullaku": os.environ.get("ACTIVITY_READ_TOKEN_O_MARMULLAKU"),
-        "johnnyguides": os.environ.get("ACTIVITY_READ_TOKEN_JOHNNYGUIDES"),
-    }
-    if not raw_sources or not any(tokens.values()):
-        print("Activity refresh is not configured; published snapshots remain in place.")
-    else:
-        try:
-            refresh(FEED, raw_sources, tokens)
-        except (ValueError, RuntimeError) as error:
-            print(error, file=sys.stderr)
-            sys.exit(1)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--paths", type=Path, default=ROOT / ".local" / "activity-paths.json")
+    parser.add_argument("--check", action="store_true", help="report stale card dates without writing")
+    args = parser.parse_args()
+    if not args.paths.is_file():
+        parser.error(f"Local path mapping is missing: {args.paths}")
+    paths = json.loads(args.paths.read_text(encoding="utf-8"))
+    if not isinstance(paths, dict) or not paths or any(not isinstance(value, str) for value in paths.values()):
+        parser.error("Local path mapping must be a nonempty slug-to-path JSON object")
+    count = refresh(ROOT / "index.html", paths, check=args.check)
+    print(f"{count} project Git date(s) {'need refreshing' if args.check else 'refreshed'}")
+    if args.check and count:
+        raise SystemExit(1)

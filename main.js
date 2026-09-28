@@ -47,29 +47,6 @@
     const time = card.querySelector(".card-updated");
     if (time) showActivity(time);
   });
-  // A public feed carries only dates. The private-repository credential stays in the publisher.
-  if (cards.length && location.protocol !== "file:") {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 3000);
-    fetch("activity.json", { cache: "no-store", signal: controller.signal })
-      .then((response) => response.ok ? response.json() : null)
-      .then((feed) => {
-        if (feed?.schema !== 1 || !feed.projects || typeof feed.projects !== "object") return;
-        cards.forEach((card) => {
-          const time = card.querySelector(".card-updated");
-          const slug = card.dataset.demoGif?.match(/^assets\/projects\/([a-z0-9-]+)\/demo\.gif$/)?.[1];
-          const remoteDate = slug && feed.projects[slug];
-          if (!time || typeof remoteDate !== "string") return;
-          const remote = new Date(remoteDate);
-          if (!Number.isNaN(remote.getTime()) && remote > new Date(time.dateTime)) {
-            time.dateTime = remoteDate;
-            showActivity(time);
-          }
-        });
-      })
-      .catch(() => {}) // The dated HTML remains usable if the feed is unavailable.
-      .finally(() => clearTimeout(timeout));
-  }
   // Restored source media is opt-in; missing templates never trigger requests.
   cards.forEach((card) => {
     const template = card.querySelector(".project-media");

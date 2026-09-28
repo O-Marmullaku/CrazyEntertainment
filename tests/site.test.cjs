@@ -62,19 +62,6 @@ test('current project identities, order, count and one reusable dialog', () => {
   }
 });
 
-test('public activity feed contains dates only for remote-backed cards', () => {
-  const feed = JSON.parse(read('activity.json'));
-  const cards = readCards(source['index.html']);
-  const slugs = new Set(cards.map((card) => card.gif?.match(/^assets\/projects\/([a-z0-9-]+)\/demo\.gif$/)?.[1]).filter(Boolean));
-  assert.equal(feed.schema, 1);
-  assert.equal(Object.keys(feed.projects).length, 13);
-  for (const [slug, date] of Object.entries(feed.projects)) {
-    assert.ok(slugs.has(slug), `Unknown public card ${slug}`);
-    assert.ok(typeof date === 'string' && Number.isFinite(Date.parse(date)), `${slug}: invalid ISO date`);
-  }
-  assert.ok(!/github\.com|O-Marmullaku|AdultVideoPlayer|OFEnhancer/.test(read('activity.json')));
-});
-
 test('all active HTML and CSS references exist, with valid local fragments', () => {
   for (const [name, html] of Object.entries(source)) {
     assert.ok(!/\b(?:src|href)=""/.test(html), `${name}: empty URL`);
@@ -161,7 +148,7 @@ test('HTTP pages/assets and relative references work at root and repository subp
   for (const mount of ['/', '/CrazyEntertainment/']) {
     const server = await startServer({ port: 0, mount });
     try {
-      const files = new Set(['', ...pages, 'style.css', 'main.js', 'activity.json', 'logo.png', 'favicon.png', 'CNAME', '.nojekyll']);
+      const files = new Set(['', ...pages, 'style.css', 'main.js', 'logo.png', 'favicon.png', 'CNAME', '.nojekyll']);
       for (const [name, html] of Object.entries(source)) {
         for (const value of references(html)) { const ref = localReference(value, name); if (ref) files.add(ref.filename); }
       }

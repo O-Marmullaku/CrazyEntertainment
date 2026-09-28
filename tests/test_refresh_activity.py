@@ -1,8 +1,6 @@
-"""Offline checks for the public activity feed publisher."""
+"""Offline checks for the local Git date updater."""
 
 import importlib.util
-import io
-import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -14,72 +12,35 @@ activity = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(activity)
 
 
-class FakeResponse(io.BytesIO):
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *_):
-        self.close()
-
-
 class ActivityTests(unittest.TestCase):
-    def test_newer_commit_updates_only_its_date(self):
+    def test_only_mapped_card_changes_and_check_mode_does_not_write(self):
         with tempfile.TemporaryDirectory() as directory:
-            feed = Path(directory) / "activity.json"
-            feed.write_text(json.dumps({"schema": 1, "projects": {
-                "first": "2026-09-01T00:00:00Z",
-                "second": "2026-09-03T00:00:00Z",
-            }}), encoding="utf-8")
-            requests = []
+            root = Path(directory)
+            page = root / "index.html"
+            before = ("<article class=\"card reveal\" data-demo-gif=\"assets/projects/first/demo.gif\">"
+                      "<time class=\"card-updated\" datetime=\"2026-09-01T00:00:00Z\">Updated Sep 1, 2026</time>"
+                      "</article><article class=\"card reveal\" data-demo-gif=\"assets/projects/second/demo.gif\">"
+                      "<time class=\"card-updated\" datetime=\"2026-09-01T00:00:00Z\">Updated Sep 1, 2026</time>"
+                      "</article>")
+            page.write_text(before, encoding="utf-8")
+            date = lambda _: "2026-09-02T12:00:00Z"
+            self.assertEqual(activity.refresh(page, {"first": str(root)}, date, check=True), 1)
+            self.assertEqual(page.read_text(encoding="utf-8"), before)
+            self.assertEqual(activity.refresh(page, {"first": str(root)}, date), 1)
+            after = page.read_text(encoding="utf-8")
+            self.assertIn("Updated Sep 2, 2026", after)
+            self.assertIn("2026-09-02T12:00:00Z", after)
+            self.assertEqual(after.count("Updated Sep 1, 2026"), 1)
+            self.assertEqual(activity.refresh(page, {"first": str(root)}, date), 0)
 
-            def opener(request, timeout):
-                requests.append((request.full_url, timeout, request.get_header("Authorization")))
-                return FakeResponse(json.dumps([{"commit": {"committer": {
-                    "date": "2026-09-02T00:00:00Z"}}}]).encode())
-
-            changed = activity.refresh(feed, json.dumps({
-                "first": "owner/one", "second": "owner/two"
-            }), {"owner": "test-token"}, opener)
-            self.assertEqual(changed, 1)
-            self.assertEqual(json.loads(feed.read_text(encoding="utf-8"))["projects"], {
-                "first": "2026-09-02T00:00:00Z",
-                "second": "2026-09-03T00:00:00Z",
-            })
-            self.assertEqual(len(requests), 2)
-            self.assertTrue(all(header == "Bearer test-token" for _, _, header in requests))
-            self.assertTrue(all(timeout == 12 for _, timeout, _ in requests))
-
-    def test_invalid_source_mapping_does_not_touch_feed(self):
+    def test_invalid_mapping_preserves_page(self):
         with tempfile.TemporaryDirectory() as directory:
-            feed = Path(directory) / "activity.json"
-            original = '{"schema":1,"projects":{"first":"2026-09-01T00:00:00Z"}}'
-            feed.write_text(original, encoding="utf-8")
-            for mapping in ({"unknown": "owner/repo"}, {"first": "bad repo"}):
-                with self.assertRaises(ValueError):
-                    activity.refresh(feed, json.dumps(mapping), {"owner": "token"})
-            self.assertEqual(feed.read_text(encoding="utf-8"), original)
-
-    def test_sources_without_an_owner_token_are_skipped(self):
-        with tempfile.TemporaryDirectory() as directory:
-            feed = Path(directory) / "activity.json"
-            feed.write_text(json.dumps({"schema": 1, "projects": {
-                "first": "2026-09-01T00:00:00Z",
-                "second": "2026-09-01T00:00:00Z",
-            }}), encoding="utf-8")
-            requests = []
-
-            def opener(request, timeout):
-                requests.append(request.full_url)
-                return FakeResponse(json.dumps([{"commit": {"committer": {
-                    "date": "2026-09-02T00:00:00Z"}}}]).encode())
-
-            changed = activity.refresh(feed, json.dumps({
-                "first": "one/repo", "second": "two/repo"
-            }), {"one": "token"}, opener)
-            self.assertEqual(changed, 1)
-            self.assertEqual(len(requests), 1)
-            self.assertEqual(json.loads(feed.read_text(encoding="utf-8"))["projects"]["second"],
-                             "2026-09-01T00:00:00Z")
+            page = Path(directory) / "index.html"
+            page.write_text("<article class=\"card reveal\"></article>", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                activity.refresh(page, {"missing": directory})
+            self.assertEqual(page.read_text(encoding="utf-8"),
+                             "<article class=\"card reveal\"></article>")
 
 
 if __name__ == "__main__":
