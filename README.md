@@ -38,7 +38,14 @@ In browser environments that prohibit navigation, `CE_OFFLINE=1` renders the act
 
 The first 18 cards have project thumbnails and demo GIFs. Their layer paths, intrinsic dimensions and composition coordinates remain in inert templates. The three newly added cards show “Preview unavailable” until authentic captures are reviewed. The TableKing live-demo URL and separate full-demo link are retained; local fallback remains available.
 
-Project activity dates in `index.html` are snapshots of each local repository's latest Git commit when the site was updated. The browser turns those dates into relative days without a network request. Sitewalk and Desktop Edge Arranger have no Git history in the supplied workspace, so their cards omit the date.
+Project activity dates in `index.html` are Git commit snapshots. On a page visit, the browser briefly fetches the public, date-only `activity.json` and shows newer dates as relative days. If that request fails, the HTML snapshot remains. A scheduled GitHub Action refreshes the feed twice a day for remote-backed projects. Six local-only Git projects retain their snapshots until the site is edited; Sitewalk and Desktop Edge Arranger have no Git history in the supplied workspace, so their cards omit the date.
+
+To enable scheduled refreshes, set two repository **Actions secrets**:
+
+- `ACTIVITY_READ_TOKEN`: a fine-grained GitHub personal access token with read-only **Contents** access to the private project repositories. Never put this token in site files or the feed.
+- `ACTIVITY_SOURCES_JSON`: a JSON object mapping public project media slugs to `owner/repository` names, for example `{"syb-l":"owner/repository"}`. The owner has a local, ignored mapping at `.local/activity-sources.json`; paste its contents into the secret, not the public repository.
+
+The workflow uses its own `GITHUB_TOKEN` to commit changed dates and request a Pages build. Its first scheduled or manually triggered run can be checked under Actions. Without the two secrets, the published snapshots continue to work.
 
 Restore only authentic, reviewed media, then follow [the media maintenance procedure](docs/media.md). Missing media is an explicit supported state; it is not a claim that the originals were verified.
 

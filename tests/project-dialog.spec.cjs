@@ -42,7 +42,7 @@ function instrument(html, { fixture = false, broken = false } = {}) {
   return html;
 }
 
-async function load(viewport, { name = 'index.html', script = true, before, fixture = false, broken = false, reducedMotion = 'reduce' } = {}) {
+async function load(viewport, { name = 'index.html', script = true, before, fixture = false, broken = false, reducedMotion = 'reduce', activityFeed } = {}) {
   const context = await browser.newContext({ viewport, reducedMotion });
   const page = await context.newPage();
   page.setDefaultTimeout(3000);
@@ -52,6 +52,7 @@ async function load(viewport, { name = 'index.html', script = true, before, fixt
   await page.route('https://fonts.googleapis.com/**', (route) => route.fulfill({ contentType: 'text/css', body: '' }));
   await page.route('https://fonts.gstatic.com/**', (route) => route.fulfill({ body: '' }));
   await page.route('https://tableking.gg/**', (route) => route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>Demo test fixture</title><button>Fixture control</button>' }));
+  if (activityFeed) await page.route('**/activity.json', (route) => route.fulfill({ contentType: 'application/json', body: JSON.stringify(activityFeed) }));
   let html = instrument(source(name), { fixture, broken });
   if (!script) html = html.replace(/<script\b[\s\S]*?<\/script>/g, '');
   if (offline) {
@@ -225,6 +226,13 @@ async function media() {
 
 async function navigation() {
   phase = 'mobile navigation and progressive enhancement';
+  if (!offline) {
+    const future = '2099-01-01T00:00:00Z';
+    const { page, finish } = await load(viewports[0], { activityFeed: { schema: 1, projects: { 'syb-l': future } } });
+    await page.waitForFunction((date) => document.querySelector('.card-updated').dateTime === date, future);
+    assert.equal(await cardNamed(page, 'Doorlight').locator('.card-updated').textContent(), 'Updated today');
+    await finish();
+  }
   const { page, finish } = await load(viewports[2]);
   assert.equal(await page.locator('#navlinks').evaluate((links) => links.inert), true);
   await page.locator('#burger').click();

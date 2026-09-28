@@ -3,8 +3,8 @@ const http = require('node:http');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const ROOT = path.resolve(__dirname, '..');
-const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.png': 'image/png', '.webp': 'image/webp', '.gif': 'image/gif' };
-const PAGES = new Set(['index.html', 'privacy.html', 'impressum.html', 'style.css', 'main.js', 'logo.png', 'favicon.png', 'CNAME', '.nojekyll']);
+const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.webp': 'image/webp', '.gif': 'image/gif' };
+const PAGES = new Set(['index.html', 'privacy.html', 'impressum.html', 'style.css', 'main.js', 'activity.json', 'logo.png', 'favicon.png', 'CNAME', '.nojekyll']);
 
 async function startServer({ root = ROOT, port = 8080, mount = '/' } = {}) {
   if (!/^\/(?:[a-zA-Z0-9_-]+\/)*$/.test(mount)) throw new Error('Mount must start and end with / and contain simple path segments');
