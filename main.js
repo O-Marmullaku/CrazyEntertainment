@@ -35,6 +35,16 @@
   }
 
   const cards = document.querySelectorAll(".card");
+  const today = new Date();
+  const calendarDay = (date) => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  cards.forEach((card) => {
+    const time = card.querySelector(".card-updated");
+    if (!time) return;
+    const commit = new Date(time.dateTime);
+    if (Number.isNaN(commit.getTime())) return;
+    const days = Math.max(0, Math.round((calendarDay(today) - calendarDay(commit)) / 86400000));
+    time.textContent = days === 0 ? "Updated today" : days === 1 ? "Updated yesterday" : `Updated ${days} days ago`;
+  });
   // Restored source media is opt-in; missing templates never trigger requests.
   cards.forEach((card) => {
     const template = card.querySelector(".project-media");

@@ -192,6 +192,7 @@ section { padding-block: clamp(70px, 11vh, 130px); }
 .card p { color: var(--fg-mut); font-size: 14.5px; line-height: 1.6; }
 .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: auto; }
 .chip { font-family: var(--font-mono); font-size: 11px; color: var(--fg-mut); padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; }
+.card-updated { align-self: flex-end; margin-top: -4px; color: var(--fg-mut); font-family: var(--font-mono); font-size: 12px; }
 
 /* ---------- project dialog ---------- */
 .card[role="button"] { cursor: pointer; }

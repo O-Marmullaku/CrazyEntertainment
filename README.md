@@ -38,6 +38,8 @@ In browser environments that prohibit navigation, `CE_OFFLINE=1` renders the act
 
 The first 18 cards have project thumbnails and demo GIFs. Their layer paths, intrinsic dimensions and composition coordinates remain in inert templates. The three newly added cards show “Preview unavailable” until authentic captures are reviewed. The TableKing live-demo URL and separate full-demo link are retained; local fallback remains available.
 
+Project activity dates in `index.html` are snapshots of each local repository's latest Git commit when the site was updated. The browser turns those dates into relative days without a network request. Sitewalk and Desktop Edge Arranger have no Git history in the supplied workspace, so their cards omit the date.
+
 Restore only authentic, reviewed media, then follow [the media maintenance procedure](docs/media.md). Missing media is an explicit supported state; it is not a claim that the originals were verified.
 
 ## Deploy

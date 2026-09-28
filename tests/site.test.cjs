@@ -39,16 +39,22 @@ test('root deployment markers and externally important pages', () => {
 test('current project identities, order, count and one reusable dialog', () => {
   const cards = readCards(source['index.html']);
   assert.deepEqual(cards.map((c) => c.name), [
-    'TableKing', 'Custom Video Platform', 'CoachLexy', 'Creator Workflow Extension', 'Doorlight',
-    'Portica', 'Reviewer 3000', 'Sitewalk', 'VideoQualityBalancer', 'Dorfkönig',
-    'Apollo Dual-Screen', 'Axiom Calculator Platform', 'MicBridge', 'ProTeaser Studio',
-    'Token Measurer', 'Crazy Enhancer for YouTube', 'DumpToTxt', 'WordSRT',
+    'Doorlight', 'TableKing', 'CoachLexy', 'Custom Video Platform', 'Creator Workflow Extension',
+    'MicBridge', 'Crazy Enhancer for YouTube', 'DumpToTxt', 'Portica', 'Reviewer 3000',
+    'Sitewalk', 'VideoQualityBalancer', 'Dorfkönig', 'Apollo Dual-Screen',
+    'Axiom Calculator Platform', 'ProTeaser Studio', 'Token Measurer', 'WordSRT',
     'CreatorWorkflow', 'FuckingShareIT', 'Desktop Edge Arranger',
   ]);
   assert.match(source['index.html'], /Digital products<\/span><span class="v">21<\/span>/);
   assert.equal((source['index.html'].match(/<dialog\b/g) || []).length, 1);
   assert.equal(new Set(cards.filter((c) => c.gif).map((c) => c.gif)).size, 18);
   assert.deepEqual(cards.filter((c) => c.live).map((c) => [c.name, c.live]), [['TableKing', 'https://tableking.gg/']]);
+  assert.equal(cards.filter((c) => c.html.includes('class="card-updated"')).length, 19);
+  for (const card of cards) {
+    const stamp = card.html.match(/<time class="card-updated" datetime="([^"]+)">Updated [^<]+<\/time>/);
+    if (['Sitewalk', 'Desktop Edge Arranger'].includes(card.name)) assert.equal(stamp, null);
+    else assert.ok(stamp && Number.isFinite(Date.parse(stamp[1])), `${card.name}: valid Git activity date`);
+  }
   for (const card of cards) {
     assert.match(card.html, /<p class="tagline">[^<]+<\/p>/);
     assert.match(card.html, /<p>[^<]+<\/p>/);

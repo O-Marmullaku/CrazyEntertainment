@@ -93,12 +93,16 @@ async function layout() {
     const { page, finish } = await load(viewport);
     const cards = page.locator('.card');
     assert.equal(await cards.count(), 21);
+    assert.equal(await page.locator('.card-updated').count(), 19);
+    assert.match(await cardNamed(page, 'Doorlight').locator('.card-updated').textContent(), /^Updated (?:today|yesterday|\d+ days ago)$/);
     assert.equal(await page.locator('.card[role="button"][tabindex="0"][aria-haspopup="dialog"]').count(), 21);
     assert.equal(await page.locator('dialog').count(), 1);
     assert.equal(await page.locator('.project-dialog-stage > *').count(), 0, 'Media creation is lazy');
     await shot(page, `home-${viewport.width}x${viewport.height}`);
     await page.locator('#work .sec-head').scrollIntoViewIfNeeded();
     await shot(page, `work-${viewport.width}x${viewport.height}`);
+    await cardNamed(page, 'Doorlight').locator('.card-updated').scrollIntoViewIfNeeded();
+    await shot(page, `activity-${viewport.width}x${viewport.height}`);
     for (let index = 0; index < 21; index++) {
       const card = cards.nth(index);
       await card.click(); await opened(page);
